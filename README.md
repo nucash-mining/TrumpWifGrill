@@ -1,0 +1,2 @@
+# TrumpWifGrill
+meme coin
