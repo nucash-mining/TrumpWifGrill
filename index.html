@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trump Wif Grill Interchain Protocol</title>
+    <link rel="stylesheet" href="App.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.5.4/dist/ethers.min.js"></script>
+    <script src="ethers.js" defer></script> <!-- Load ethers.js -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px; /* Add padding to the body */
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .wallet-menu {
+            display: flex;
+            align-items: center;
+            flex-direction: column; /* Stack elements vertically */
+        }
+
+        button#connectWalletButton, .dropbtn {
+            background-color: #001f3f; /* Change to navy blue */
+            color: #fff;
+            padding: 20px 50px; /* Increase padding */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px; /* Add margin bottom for spacing */
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+            font-size: 16px; /* Increase font size */
+        }
+
+        button#connectWalletButton:hover, .dropbtn:hover {
+            background-color: #555; /* Change to gray when hovered */
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            left: -100%; /* Move the menu further to the left */
+            right: auto; /* Ensure right is not set */
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-content a img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: grey;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+
+        select, input, button {
+            width: 48%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #777;
+        }
+
+        .balance-box {
+            width: 48%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #f0f0f0;
+            text-align: right;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #ff0000; /* Match header color */
+            color: #fff;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .contract-address {
+            background-color: white;
+            color: #001f3f; /* Navy blue font */
+            text-align: center;
+            padding: 10px 20px; /* Add padding */
+            border-radius: 8px; /* Rounded edges */
+            font-size: 1.2em;
+            margin: 20px 0; /* Margin to separate from other elements */
+        }
+
+        #customTokenAddress {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="TWG.gif" alt="Logo" class="logo">
+        <h1>Trump Wif Grill Interchain Protocol</h1>
+        <div class="wallet-menu">
+            <button id="connectWalletButton">Connect Wallet</button>
+            <div class="dropdown">
+                <button class="dropbtn" id="networkButton">Network</button>
+                <div class="dropdown-content">
+                    <a href="#" data-chain-id="0xfa2" data-rpc-url="https://fantom.api.onfinality.io/public" data-chain-name="fantom"><img src="https://avatars.githubusercontent.com/u/39045722?s=48&v=4" alt="Fantom Testnet">Fantom Testnet</a>
+                    <a href="#" data-chain-id="0x1a4" data-rpc-url="https://sepolia.blast.io" data-chain-name="blast"><img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffreecoins24.io%2Fwp-content%2Fuploads%2F2023%2F11%2FBlast-network-logo.jpg&f=1&nofb=1&ipt=db0dcbd5c3cbb1eb8607d162e2758193fe79be975e3214756fa7b428a60a773a&ipo=images" alt="Blast Sepolia">Blast Sepolia</a>
+                    <a href="#" data-chain-id="0xaa36a7" data-rpc-url="https://ethereum-sepolia-rpc.publicnode.com" data-chain-name="ethereum"><img src="https://avatars.githubusercontent.com/u/6250754?s=48&v=4" alt="Ethereum Sepolia Testnet">Ethereum Sepolia Testnet</a>
+                    <a href="#" data-chain-id="0x507" data-rpc-url="https://moonbase-alpha.public.blastapi.io" data-chain-name="moonbeam"><img src="https://avatars.githubusercontent.com/u/84856768?s=48&v=4" alt="Moonbeam Alpha Testnet">Moonbeam Alpha Testnet</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="contract-address">
+        CA: 0xF659A577B56A8D5d124ac740670429AbEE9160C4
+    </div>
+    <main>
+        <div class="container">
+            <div id="walletInfo">
+                <!-- Wallet information and token balances will be displayed here -->
+            </div>
+            <div id="swapForm" class="clearfix">
+                <select id="sourceToken">
+                    <option value="tTWG">Trump Wif Grill (tTWG)</option>
+                    <option value="wETH">Wrapped Ethereum (wETH)</option>
+                    <option value="wFTM">Wrapped Fantom (wFTM)</option>
+                    <option value="wMATIC">Wrapped Matic (wMATIC)</option>
+                    <option value="custom">Custom Token</option>
+                </select>
+                <div class="balance-box" id="tokenBalance">Balance: 0</div>
+                <input type="text" id="customTokenAddress" placeholder="Custom Token Address">
+                <input type="number" id="amount" placeholder="Amount">
+                <select id="destinationBlockchain">
+                    <option value="fantom">Fantom Testnet</option>
+                    <option value="blast">Blast Sepolia</option>
+                    <option value="ethereum">Ethereum Sepolia Testnet</option>
+                    <option value="moonbeam">Moonbeam Alpha Testnet</option>
+                </select>
+                <input type="text" id="destinationAddress" placeholder="Destination Address">
+                <button id="swapButton">Swap Tokens</button>
+            </div>
+            <div id="transactionStatus">
+                <!-- Transaction status will be displayed here -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Trump Wif Grill Interchain Protocol</p>
+    </footer>
+    <script>
+        const interchainTokenABI = [[{"inputs":[{"internalType":"address","name":"interchainTokenServiceAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"AlreadyInitialized","type":"error"},{"inputs":[],"name":"InterchainTokenServiceAddressZero","type":"error"},{"inputs":[],"name":"InvalidAccount","type":"error"},{"inputs":[{"internalType":"address","name":"fromAccount","type":"address"},{"internalType":"address","name":"toAccount","type":"address"},{"internalType":"uint256","name":"accountRoles","type":"uint256"}],"name":"InvalidProposedRoles","type":"error"},{"inputs":[],"name":"InvalidS","type":"error"},{"inputs":[],"name":"InvalidSignature","type":"error"},{"inputs":[],"name":"InvalidV","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"accountRoles","type":"uint256"}],"name":"MissingAllRoles","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"accountRoles","type":"uint256"}],"name":"MissingAnyOfRoles","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint8","name":"role","type":"uint8"}],"name":"MissingRole","type":"error"},{"inputs":[],"name":"PermitExpired","type":"error"},{"inputs":[],"name":"TokenIdZero","type":"error"},{"inputs":[],"name":"TokenNameEmpty","type":"error"},{"inputs":[],"name":"TokenSymbolEmpty","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"uint256","name":"accountRoles","type":"uint256"}],"name":"RolesAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"fromAccount","type":"address"},{"indexed":true,"internalType":"address","name":"toAccount","type":"address"},{"indexed":false,"internalType":"uint256","name":"accountRoles","type":"uint256"}],"name":"RolesProposed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"uint256","name":"accountRoles","type":"uint256"}],"name":"RolesRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"fromMinter","type":"address"}],"name":"acceptMintership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint8","name":"role","type":"uint8"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"tokenId_","type":"bytes32"},{"internalType":"address","name":"minter","type":"address"},{"internalType":"string","name":"tokenName","type":"string"},{"internalType":"string","name":"tokenSymbol","type":"string"},{"internalType":"uint8","name":"tokenDecimals","type":"uint8"}],"name":"init","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"interchainTokenId","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"interchainTokenService","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"destinationChain","type":"string"},{"internalType":"bytes","name":"recipient","type":"bytes"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bytes","name":"metadata","type":"bytes"}],"name":"interchainTransfer","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"string","name":"destinationChain","type":"string"},{"internalType":"bytes","name":"recipient","type":"bytes"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bytes","name":"metadata","type":"bytes"}],"name":"interchainTransferFrom","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nameHash","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"issuer","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter_","type":"address"}],"name":"proposeMintership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"minter_","type":"address"}],"name":"transferMintership","outputs":[],"stateMutability":"nonpayable","type":"function"}]];
+        const wETHABI = [/* Wrapped Ethereum ABI here */];
+        const wrappedFTMABI = [/* Axelar Wrapped FTM ABI here */];
+        const wrappedWMATICABI = [/* Axelar Wrapped WMATIC ABI here */];
+
+        const networks = {
+            fantom: {
+                chainId: "0xfa2",
+                rpcUrl: "https://fantom.api.onfinality.io/public",
+                logo: "https://avatars.githubusercontent.com/u/39045722?s=48&v=4"
+            },
+            blast: {
+                chainId: "0x1a4",
+                rpcUrl: "https://sepolia.blast.io",
+                logo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffreecoins24.io%2Fwp-content%2Fuploads%2F2023%2F11%2FBlast-network-logo.jpg&f=1&nofb=1&ipt=db0dcbd5c3cbb1eb8607d162e2758193fe79be975e3214756fa7b428a60a773a&ipo=images"
+            },
+            ethereum: {
+                chainId: "0xaa36a7",
+                rpcUrl: "https://ethereum-sepolia-rpc.publicnode.com",
+                logo: "https://avatars.githubusercontent.com/u/6250754?s=48&v=4"
+            },
+            moonbeam: {
+                chainId: "0x507",
+                rpcUrl: "https://moonbase-alpha.public.blastapi.io",
+                logo: "https://avatars.githubusercontent.com/u/84856768?s=48&v=4"
+            }
+        };
+
+        let currentAccount = null;
+        let currentNetwork = null;
+
+        async function connectWallet() {
+            try {
+                if (window.ethereum) {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    currentAccount = window.ethereum.selectedAddress;
+                    console.log('Connected to MetaMask');
+                    const connectWalletButton = document.getElementById('connectWalletButton');
+                    connectWalletButton.innerText = 'Disconnect Wallet';
+                    if (currentNetwork && currentNetwork.logo) {
+                        connectWalletButton.style.backgroundImage = `url(${currentNetwork.logo})`;
+                        connectWalletButton.style.backgroundSize = '40px 40px';
+                        connectWalletButton.style.backgroundRepeat = 'no-repeat';
+                        connectWalletButton.style.backgroundPosition = '10px center';
+                    }
+                    showTokenBalance();
+                } else {
+                    console.error('MetaMask not detected');
+                }
+            } catch (error) {
+                console.error('Failed to connect wallet:', error);
+            }
+        }
+
+        async function disconnectWallet() {
+            try {
+                if (window.ethereum) {
+                    currentAccount = null;
+                    window.location.reload();
+                } else {
+                    console.error('MetaMask not detected');
+                }
+            } catch (error) {
+                console.error('Failed to disconnect wallet:', error);
+            }
+        }
+
+        async function switchBlockchain(chainId, rpcUrl, chainName) {
+            try {
+                if (window.ethereum) {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: ethers.utils.hexValue(parseInt(chainId, 16)) }]
+                    });
+                    setNetwork(chainName);
+                    showTokenBalance();
+                } else {
+                    console.error('MetaMask not detected');
+                }
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: ethers.utils.hexValue(parseInt(chainId, 16)),
+                                rpcUrls: [rpcUrl],
+                                chainName: chainName
+                            }]
+                        });
+                        setNetwork(chainName);
+                        showTokenBalance();
+                    } catch (addError) {
+                        console.error('Failed to add or switch blockchain network:', addError);
+                    }
+                } else {
+                    console.error('Failed to switch blockchain network:', switchError);
+                }
+            }
+        }
+
+        function setNetwork(chainName) {
+            currentNetwork = networks[chainName];
+            document.getElementById('networkButton').innerText = chainName;
+            updateTokenOptions(chainName);
+            showTokenBalance();
+        }
+
+        function updateTokenOptions(chainName) {
+            const sourceTokenSelect = document.getElementById('sourceToken');
+            sourceTokenSelect.innerHTML = '';
+            sourceTokenSelect.innerHTML += '<option value="tTWG">Trump Wif Grill (tTWG)</option>';
+            sourceTokenSelect.innerHTML += '<option value="wETH">Wrapped Ethereum (wETH)</option>';
+            sourceTokenSelect.innerHTML += '<option value="wFTM">Wrapped Fantom (wFTM)</option>';
+            sourceTokenSelect.innerHTML += '<option value="wMATIC">Wrapped Matic (wMATIC)</option>';
+            sourceTokenSelect.innerHTML += '<option value="custom">Custom Token</option>';
+        }
+
+        async function showTokenBalance() {
+            try {
+                if (!currentAccount) return;
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                let balance;
+                const selectedToken = document.getElementById('sourceToken').value;
+                let tokenAddress;
+                let tokenABI;
+
+                if (selectedToken === 'tTWG') {
+                    tokenAddress = '0xF659A577B56A8D5d124ac740670429AbEE9160C4';
+                    tokenABI = interchainTokenABI;
+                } else if (selectedToken === 'wETH') {
+                    tokenAddress = '0x4200000000000000000000000000000000000023';
+                    tokenABI = wETHABI;
+                } else if (selectedToken === 'wFTM') {
+                    tokenAddress = '0x594D8b81eC765410536ab59E98091700b99508D8';
+                    tokenABI = wrappedFTMABI;
+                } else if (selectedToken === 'wMATIC') {
+                    tokenAddress = '0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380';
+                    tokenABI = wrappedWMATICABI;
+                } else if (selectedToken === 'custom') {
+                    tokenAddress = document.getElementById('customTokenAddress').value;
+                    tokenABI = interchainTokenABI; // This should be updated with the custom token ABI
+                } else {
+                    balance = await provider.getBalance(currentAccount);
+                    document.getElementById('tokenBalance').innerText = `Balance: ${ethers.utils.formatUnits(balance, 18)}`;
+                    return;
+                }
+
+                const contract = new ethers.Contract(tokenAddress, tokenABI, provider);
+                balance = await contract.balanceOf(currentAccount);
+                document.getElementById('tokenBalance').innerText = `Balance: ${ethers.utils.formatUnits(balance, 18)}`;
+            } catch (error) {
+                console.error('Failed to fetch token balance:', error);
+            }
+        }
+
+        async function swapTokens() {
+            try {
+                const sourceToken = document.getElementById('sourceToken').value;
+                const amount = document.getElementById('amount').value;
+                const destinationBlockchain = document.getElementById('destinationBlockchain').value;
+                const destinationAddress = document.getElementById('destinationAddress').value;
+
+                const network = networks[destinationBlockchain];
+                const provider = new ethers.providers.JsonRpcProvider(network.rpcUrl);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(contractAddress, interchainTokenABI, signer);
+
+                const tx = await contract.sendToken(destinationBlockchain, destinationAddress, ethers.utils.parseUnits(amount, 18));
+                await tx.wait();
+                console.log('Transaction successful');
+            } catch (error) {
+                console.error('Failed to swap tokens:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const connectWalletButton = document.getElementById('connectWalletButton');
+            connectWalletButton.addEventListener('click', () => {
+                if (connectWalletButton.innerText === 'Connect Wallet') {
+                    connectWallet();
+                } else {
+                    disconnectWallet();
+                }
+            });
+
+            document.querySelectorAll('.dropdown-content a').forEach(item => {
+                item.addEventListener('click', async (event) => {
+                    const chainId = event.target.getAttribute('data-chain-id');
+                    const rpcUrl = event.target.getAttribute('data-rpc-url');
+                    const chainName = event.target.getAttribute('data-chain-name');
+                    await switchBlockchain(chainId, rpcUrl, chainName);
+                });
+            });
+
+            document.getElementById('sourceToken').addEventListener('change', showTokenBalance);
+            document.getElementById('sourceToken').addEventListener('change', () => {
+                const customTokenAddressInput = document.getElementById('customTokenAddress');
+                if (document.getElementById('sourceToken').value === 'custom') {
+                    customTokenAddressInput.style.display = 'block';
+                } else {
+                    customTokenAddressInput.style.display = 'none';
+                }
+            });
+
+            document.getElementById('customTokenAddress').addEventListener('input', showTokenBalance);
+            document.getElementById('swapButton').addEventListener('click', swapTokens);
+        });
+    </script>
+</body>
+</html>
